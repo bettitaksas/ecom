@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -17,7 +19,7 @@ import java.util.Arrays;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class DataPopulator implements ApplicationRunner {
+public class DataPopulator implements ApplicationListener<ContextRefreshedEvent> {
 
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
@@ -34,8 +36,11 @@ public class DataPopulator implements ApplicationRunner {
 
     @Override
     @Transactional
-    public void run(ApplicationArguments args) throws Exception {
-        populateData();
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        if (isDatabaseEmpty()) {
+            DataPopulator dataPopulator = event.getApplicationContext().getBean(DataPopulator.class);
+            dataPopulator.populateData();
+        }
     }
 
     public void populateData(){
@@ -74,5 +79,10 @@ public class DataPopulator implements ApplicationRunner {
                         climberEquipment1,
                         campingEquipment1
                 ));
+    }
+
+    private boolean isDatabaseEmpty() {
+        // Itt ellenőrizd, hogy a Product tábla üres-e
+        return productRepository.count() == 0;
     }
 }
