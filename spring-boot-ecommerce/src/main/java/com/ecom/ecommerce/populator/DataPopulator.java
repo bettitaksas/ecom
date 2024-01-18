@@ -55,21 +55,25 @@ public class DataPopulator implements ApplicationListener<ContextRefreshedEvent>
         shoes1.setCategory(shoes);
         shoes1.setName("shoes1");
         shoes1.setUnitPrice(BigDecimal.valueOf(49.99));
+        shoes1.setImageUrl("assets/images/products/shoes1.jpg");
 
         Product jacket1 = new Product();
         jacket1.setCategory(jackets);
         jacket1.setName("jacket1");
         jacket1.setUnitPrice(BigDecimal.valueOf(59.99));
+        jacket1.setImageUrl("assets/images/products/jacket1.jpg");
 
         Product climberEquipment1 = new Product();
         climberEquipment1.setCategory(climberEquipments);
         climberEquipment1.setName("climberEquipment1");
         climberEquipment1.setUnitPrice(BigDecimal.valueOf(39.99));
+        climberEquipment1.setImageUrl("assets/images/products/climberEquipment1.jpg");
 
         Product campingEquipment1 = new Product();
         campingEquipment1.setCategory(campingEquipments);
         campingEquipment1.setName("campingEquipment1");
         campingEquipment1.setUnitPrice(BigDecimal.valueOf(29.99));
+        campingEquipment1.setImageUrl("assets/images/products/campingEquipment1.jpg");
 
 
         productRepository.saveAll(
