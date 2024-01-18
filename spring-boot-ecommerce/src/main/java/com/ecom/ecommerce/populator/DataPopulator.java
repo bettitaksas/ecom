@@ -4,11 +4,8 @@ import com.ecom.ecommerce.entity.Product;
 import com.ecom.ecommerce.entity.ProductCategory;
 import com.ecom.ecommerce.repository.ProductCategoryRepository;
 import com.ecom.ecommerce.repository.ProductRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
@@ -23,15 +20,12 @@ public class DataPopulator implements ApplicationListener<ContextRefreshedEvent>
 
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
-    private final EntityManager entityManager;
 
     @Autowired
     public DataPopulator(ProductRepository productRepository,
-                         ProductCategoryRepository productCategoryRepository,
-                         EntityManager entityManager) {
+                         ProductCategoryRepository productCategoryRepository) {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
-        this.entityManager = entityManager;
     }
 
     @Override
@@ -43,7 +37,7 @@ public class DataPopulator implements ApplicationListener<ContextRefreshedEvent>
         }
     }
 
-    public void populateData(){
+    public void populateData() {
         ProductCategory shoes = new ProductCategory();
         ProductCategory jackets = new ProductCategory();
         ProductCategory climberEquipments = new ProductCategory();
@@ -82,7 +76,6 @@ public class DataPopulator implements ApplicationListener<ContextRefreshedEvent>
     }
 
     private boolean isDatabaseEmpty() {
-        // Itt ellenőrizd, hogy a Product tábla üres-e
         return productRepository.count() == 0;
     }
 }
