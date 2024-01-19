@@ -9,16 +9,16 @@
       <nav class="navbar-sidebar">
         <ul class="list-unstyled navbar-list">
           <li>
-            <a href="#">Shoes</a>
+            <a routerLink="/category/1" routerLinkActive="active-link">Shoes</a>
           </li>
           <li>
-            <a href="#">Jackets</a>
+            <a routerLink="/category/2" routerLinkActive="active-link">Jackets</a>
           </li>
           <li>
-            <a href="#">Climbing Equipments</a>
+            <a routerLink="/category/3" routerLinkActive="active-link">Climbing</a>
           </li>
           <li>
-            <a href="#">Camping Equipments</a>
+            <a routerLink="/category/4" routerLinkActive="active-link">Camping</a>
           </li>
         </ul>
       </nav>
@@ -50,8 +50,7 @@
       </div>
     </header>
 
-    <app-product-list></app-product-list>
-
+    <router-outlet></router-outlet>
 
   </div>
 
