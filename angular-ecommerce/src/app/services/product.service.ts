@@ -15,9 +15,15 @@ export class ProductService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getProductList(theCategoryId: number): Observable<Product[]> {
-    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
+  getProductList(theCategoryId: number | null): Observable<Product[]> {
 
+    let searchUrl = `${this.baseUrl}`;
+
+    if (theCategoryId == null) {
+      return this.getProducts(searchUrl);
+    }
+
+    searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
     return this.getProducts(searchUrl);
   }
 
