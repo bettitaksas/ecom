@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ProductService} from "../../services/product.service";
+import {ActivatedRoute} from '@angular/router';
 import {Product} from "../../common/product";
-import {ActivatedRoute} from "@angular/router";
+import {ProductService} from "../../services/product.service";
 
 @Component({
   selector: 'app-product-list',
@@ -10,7 +10,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ProductListComponent implements OnInit {
 
-  products: Product[] = [];
+  products: Product[] = []
   currentCategoryId: number = 1;
   searchMode: boolean = false;
 
@@ -18,50 +18,49 @@ export class ProductListComponent implements OnInit {
               private route: ActivatedRoute) {
   }
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(
-      () => {
-        this.listProducts();
-      }
-    )
+  ngOnInit() {
+    this.route.paramMap.subscribe(() => {
+      this.listProducts();
+    });
   }
 
-  private listProducts() {
+  listProducts() {
+
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
     if (this.searchMode) {
       this.handleSearchProducts();
+    } else {
+      this.handleListProducts();
     }
 
-    this.handleListProducts();
+  }
+
+  handleSearchProducts() {
+
+    const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
+
+    this.productService.searchProducts(theKeyword).subscribe(
+      data => {
+        this.products = data;
+      }
+    )
   }
 
   handleListProducts() {
 
-    const hasCategoryId: boolean = this.route
-      .snapshot.paramMap.has('id');
+    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
-    if(hasCategoryId) {
-      this.currentCategoryId = +this.route
-        .snapshot.paramMap.get('id')!;
+    if (hasCategoryId) {
+      this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
+    } else {
+      this.currentCategoryId = 1;
     }
 
-    this.productService.getProductList(this.currentCategoryId)
-      .subscribe(
-        data => {
-          console.log(data);
-          this.products = data;
-        }
-      )
-  }
-
-  private handleSearchProducts() {
-    const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
-    this.productService.searchProducts(theKeyword)
-      .subscribe(
-        data => {
-          this.products = data;
-        }
-      );
+    this.productService.getProductList(this.currentCategoryId).subscribe(
+      data => {
+        this.products = data;
+      }
+    )
   }
 }
